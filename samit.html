@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Rental Website</title>
+    <link rel="stylesheet" href="samit.css">
+</head>
+<body>
+    <div class="container">
+        <div id="searchPage">
+            <div class="header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for a location">
+                </div>
+                <select class="sort-select" onchange="sortProperties(this.value)">
+                    <option value="">Sort by</option>
+                    <option value="price">Price</option>
+                    <option value="rating">Rating</option>
+                    <option value="reviews">Reviews</option>
+                </select>
+            </div>
+            <div class="property-list" id="propertyList">
+                <!-- Property items will be dynamically added here -->
+            </div>
+        </div>
+
+        <div id="propertyDetailsPage" style="display: none;">
+            <h2>Property Details</h2>
+            <img id="mainImage" class="main-image" src="" alt="Property Main Image">
+            <button onclick="showMoreImages()">View More Images</button>
+            <div class="image-gallery" id="imageGallery">
+                <!-- Property images will be added here -->
+            </div>
+            <div class="section" id="selectedProperty">
+                <!-- Selected property details will be shown here -->
+            </div>
+            <h3>Select Rental Period</h3>
+            <select id="rentalPeriod" class="period-select" onchange="updatePrice()">
+                <option value="1">1 month</option>
+                <option value="2">2 months</option>
+                <option value="3">3 months</option>
+                <option value="4">4 months</option>
+                <option value="5">5 months</option>
+                <option value="6">6 months</option>
+                <option value="12">1 year</option>
+            </select>
+            <p>Total Price: ₹<span id="totalPrice">0</span></p>
+            <button class="button" onclick="showCirclePage()">Pay with Circle</button>
+        </div>
+
+        <div id="circlePage" style="display: none;">
+            <h2>Pay with Circle</h2>
+            <div class="progress-indicator">
+                <div class="progress-step active" id="step1"></div>
+                <div class="progress-step" id="step2"></div>
+                <div class="progress-step" id="step3"></div>
+            </div>
+            <div class="section" id="eligibilityCheck">
+                <h3>Eligibility Check</h3>
+                <div class="subsection">
+                    <h4>Basic Details</h4>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" required>
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fatherName">Father's Name</label>
+                        <input type="text" id="fatherName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <h4>Work Details</h4>
+                    <div class="form-group">
+                        <label for="company">Company Name</label>
+                        <input type="text" id="company" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jobProfile">Job Profile</label>
+                        <input type="text" id="jobProfile" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="salary">Salary</label>
+                        <input type="number" id="salary" required>
+                    </div>
+                </div>
+                <button class="button" onclick="nextSection('setupAutopay')">Next</button>
+            </div>
+            <div class="section" id="setupAutopay" style="display: none;">
+                <h3>Setup Autopay</h3>
+                <div class="subsection">
+                    <h4>Bank Details</h4>
+                    <div class="form-group">
+                        <label for="accountNo">Account Number</label>
+                        <input type="text" id="accountNo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ifsc">IFSC Code</label>
+                        <input type="text" id="ifsc" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountHolder">Account Holder Name</label>
+                        <input type="text" id="accountHolder" required>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <h4>Identity Verification</h4>
+                    <div class="form-group">
+                        <label for="aadhar">Aadhar Card Number</label>
+                        <input type="text" id="aadhar" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="aadharImage">Upload Aadhar Card Image</label>
+                        <input type="file" id="aadharImage" accept="image/*">
+                    </div>
+                </div>
+                <button class="button back-button" onclick="backSection('eligibilityCheck')">Back</button>
+                <button class="button" onclick="nextSection('moveIn')">Next</button>
+            </div>
+            <div class="section" id="moveIn" style="display: none;">
+                <h3>Move In</h3>
+                <div class="form-group">
+                    <label for="moveInDate">Move-in Date</label>
+                    <input type="date" id="moveInDate" required>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="termsAgree" required>
+                    <label for="termsAgree">I agree to the terms and conditions</label>
+                </div>
+                <button class="button back-button" onclick="backSection('setupAutopay')">Go Back</button>
+                <button class="button" onclick="showFinalPage()">Get Started</button>
+            </div>
+        </div>
+
+        <div id="finalPage" style="display: none;">
+            <h2>One Step Away from Your Dream Home</h2>
+            <div class="rent-converted">Rent Converted to Zero EMI</div>
+            <div class="section">
+                <h3>Co-living Partner</h3>
+                <div class="form-group">
+                    <label for="partnerName">Partner Name</label>
+                    <input type="text" id="partnerName">
+                </div>
+                <div class="form-group">
+                    <label>Payment Amount</label>
+                    <span id="paymentAmount"></span>
+                </div>
+                <div class="form-group">
+                    <label>Monthly Rent</label>
+                    <span id="monthlyRent"></span>
+                </div>
+                <div class="form-group">
+                    <label>Rent Cycle</label>
+                    <span id="rentCycle"></span>
+                </div>
+            </div>
+            <button class="button" onclick="showCongratsPage()">Continue</button>
+        </div>
+
+        <div id="congratsPage" style="display: none;">
+            <h2>Thank You for Booking with Us!</h2>
+            <img src="celebration-sticker.png" alt="Celebration Sticker" class="sticker">
+        </div>
+    </div>
+    <script src="samit.js"></script>
+</body>
+</html>
